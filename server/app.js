@@ -1,18 +1,25 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var redis = require('async-redis').createClient();
+// var logger = require('morgan');
 var phin = require('phin').defaults({'method': 'get', 'headers': {'User-Agent': 'evehu - timer'}});
+var mysql = require('./models/mysqldb.js');
+const ws = require('ws');
 
 const router = require('./routes.js');
 const update_campaigns = require('./tasks/update_campaigns.js');
 
 var app = express();
-app.redis = redis;
 app.phin = phin;
+app.mysql = new mysql({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'evehu_timer'
+});
+app.campaigns = {};
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -39,11 +46,24 @@ async function update(app) {
     console.log('server down, wait 5 min');
     await sleep(600);
   } else {
-    await update_campaigns(app);
+    app.campaigns = await update_campaigns(app);
+    console.log(app.campaigns);
   }
 
   await sleep(60);
   update(app);
 }
+
+// websocket
+const wss = new ws.WebSocketServer({port: 9090});
+wss.on('connection', function connection(ws) {
+  ws.send(app.campaigns);
+
+  ws.on('message', function message(data) {
+    if (data == "update") {
+      ws.send(app.campaigns)
+    }
+  })
+})
 
 module.exports = app;

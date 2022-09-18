@@ -1,6 +1,4 @@
 const esi = require('./esi.js');
-const fs = require('fs/promises');
-const path = require('path');
 
 // get all regions (id, name)
 exports.getRegions = async function (app) {
@@ -10,7 +8,7 @@ exports.getRegions = async function (app) {
   for (const id of regions) {
     const data = await esi.getRegion(app, id);
     if (!data) continue;
-    
+
     const result = await app.mysql.query(`insert ignore regions (region_id, name) values (${id}, '${data.name}')`);
     if (result.affectedRows == 1) console.log(`region ${id} added`);
   }
@@ -30,33 +28,20 @@ exports.getConstellations = async function (app) {
   }
 }
 
-// get all systems (id, name, security_class, security_status, constellation_id)
+// get all systems (id, name, security_status, constellation_id)
 exports.getSystems = async function (app) {
-  
-}
+  const systems = await esi.getSystems(app);
+  if (!systems) return;
 
-// export a json file in {id: name} format for localization
-exports.generateLocalFile = async function (app, tablename, filename) {
-  if (filename == undefined) filename = tablename;
-  const id_field = tablename.slice(0, -1) + '_id';
-  let ids = await app.mysql.query(`select ${id_field} from ${tablename}`);
-  ids = ids.map(x => x[id_field]);
-  const obj = {};
-  for (const id of ids) obj[id] = "";
-  const json = JSON.stringify(obj, null, 4);
-  await fs.writeFile(path.join(__dirname, `../localization/${filename}.json`), json);
-}
+  for (const id of systems) {
+    // esi get connection problem sometime, skip existing systems after restart
+    const exsit = await app.mysql.query(`select 1 from systems where system_id = ${id}`);
+    if (exsit.length == 1) continue;
 
-// rename names from localization file
-exports.rename = async function (app, tablename, filename) {
-  if (filename == undefined) filename = tablename;
-  const id_field = tablename.slice(0, -1) + '_id';
-  const data = await fs.readFile(path.join(__dirname, `../localization/${filename}.json`));
-  const json = JSON.parse(data);
+    const data = await esi.getSystem(app, id);
+    if (!data) continue;
 
-  for (const [id, name] of Object.entries(json)) {
-    if (!value) continue;
-    const result = await app.mysql.query(`update ${tablename} set name = "${name}" where ${id_field} = "${id}"`);
-    if (result.affectedRows == 1) console.log(`rename ${tablename}: ${id} to ${name}`);
+    const result = await app.mysql.query(`insert ignore systems (system_id, name, security_status, constellation_id) values (${id}, "${data.name}", "${data.security_status}", ${data.constellation_id})`);
+    if (result.affectedRows == 1) console.log(`system ${id} added`);
   }
 }
