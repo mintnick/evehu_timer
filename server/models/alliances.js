@@ -20,5 +20,7 @@ async function addAlliance(app, id) {
   if (result.affectedRows == 1) console.log(`alli ${id} added`);
 }
 
-module.exports.getAlliances = getAlliances;
-module.exports.addAlliance = addAlliance;
+module.exports = {
+  getAlliances: getAlliances,
+  addAlliance: addAlliance,
+}

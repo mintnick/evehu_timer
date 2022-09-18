@@ -15,5 +15,8 @@ app.phin = phin;
 
 // alliances.getAlliances(app);
 // universe.getRegions(app);
+// universe.getConstellations(app);
+
 // universe.generateLocalFile(app, 'regions');
+universe.generateLocalFile(app, 'constellations');
 // universe.rename(app, 'regions');
