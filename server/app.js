@@ -47,7 +47,6 @@ async function update(app) {
     await sleep(600);
   } else {
     app.campaigns = await update_campaigns(app);
-    console.log(app.campaigns);
   }
 
   await sleep(60);
