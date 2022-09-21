@@ -17,7 +17,7 @@ app.mysql = new mysql({
   password: 'password',
   database: 'evehu_timer'
 });
-app.campaigns = {};
+app.campaigns = "";
 
 // app.use(logger('dev'));
 app.use(express.json());
@@ -46,7 +46,7 @@ async function update(app) {
     console.log('server down, wait 5 min');
     await sleep(600);
   } else {
-    app.campaigns = await update_campaigns(app);
+    app.campaigns = JSON.stringify(await update_campaigns(app));
   }
 
   await sleep(60);
