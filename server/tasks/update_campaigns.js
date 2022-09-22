@@ -50,13 +50,20 @@ module.exports = async function (app) {
     record.event_type = event_type;
 
     // delete unused keys
-    // delete record.campaign_id;
+    delete record.campaign_id;
     delete record.constellation_id;
-    delete record.defender_id;
+    // delete record.defender_id;
     delete record.solar_system_id;
-    delete record.start_time;
+    // delete record.start_time;
     delete record.structure_id;
   }
+  data.sort( (a, b) => {
+    const keyA = Date.parse(a.start_time);
+    const keyB = Date.parse(b.start_time);
+    if (keyA < keyB) return -1;
+    if (keyA > keyB) return 1;
+    return 0;
+  })
   // const json_str = JSON.stringify(data);
   // await app.redis.setex(camp_key, 600, json_str);
   return data;

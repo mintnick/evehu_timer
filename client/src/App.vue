@@ -48,6 +48,10 @@
         @updateFilters="updateFilters"
       ></Filter>
 
+      <CampaignBoard
+        :filteredCampaigns="getFilteredCampaigns"
+      >
+      </CampaignBoard>
       <!-- <span>{{ selectedRegions }}</span>
       <span>{{ selectedAlliances }}</span>
       <span>{{ getFilteredCampaigns }}</span> -->
@@ -58,12 +62,13 @@
 <script>
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import Filter from './components/Filter.vue'
+import CampaignBoard from './components/CampaignBoard.vue'
 
 export default {
   name: 'App',
 
   components: {
-    Filter,
+    Filter, CampaignBoard,
   },
 
   data: () => ({
@@ -152,13 +157,13 @@ export default {
           filteredCampaigns.push(campaign);
         }
       }
+
       return filteredCampaigns;
     },
   },
 
   methods: {
     updateFilters(selectedRegions, selectedAlliances) {
-      // console.log(selectedRegions);
       this.selectedRegions = selectedRegions;
       this.selectedAlliances = selectedAlliances;
     },
