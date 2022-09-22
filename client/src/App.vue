@@ -45,22 +45,32 @@
       <!-- <span>{{ campaigns[0] }}</span>
       <span>{{ getRegions }}</span>
       <span>{{ getAlliances }}</span> -->
+      <Filter
+        :regions="getRegions"
+        :alliances="getAlliances"
+        @updateFilters="updateFilters"
+      ></Filter>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import { useTheme } from 'vuetify/lib/framework.mjs';
+import Filter from './components/Filter.vue'
 
 export default {
   name: 'App',
 
   components: {
+    Filter,
   },
 
   data: () => ({
     socket: {},
     campaigns: [],
+    filteredCampaignIds: Set,
+    selectedRegions: [],
+    selectedAlliances: [],
 
     drawer: false,
     group: null,
@@ -104,7 +114,7 @@ export default {
 
     this.socket.onmessage = (event) => {
       this.campaigns = JSON.parse(event.data);
-      console.log(this.campaigns);
+      // console.log(this.campaigns);
     }
 
     this.socket.onclose = () => {
@@ -121,6 +131,7 @@ export default {
       if (!this.campaigns) return;
       let regions = new Set();
       this.campaigns.map(record => regions.add(record.region_name));
+      regions = Array.from(regions);
       return regions;
     },
 
@@ -128,7 +139,14 @@ export default {
       if (!this.campaigns) return;
       let allis = new Set();
       this.campaigns.map(record => allis.add(record.alli_name));
+      allis = Array.from(allis);
       return allis;
+    },
+  },
+
+  methods: {
+    updateFilters(selectedRegions, selectedAlliances) {
+      // console.log(selectedRegions);
     },
   }
 }

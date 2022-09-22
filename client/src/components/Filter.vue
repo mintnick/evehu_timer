@@ -1,0 +1,71 @@
+<template>
+  <!-- <span>{{ regions }}</span> -->
+  <v-row>
+    <v-col>
+      <v-card-text>
+        <h2 class="text-h6">
+          星域
+        </h2>
+        <v-chip-group v-model="selectedRegions" column multiple>
+          <v-chip v-for="region in regions" filter outlined label>
+            {{ region }}
+          </v-chip>
+        </v-chip-group>
+      </v-card-text>
+    </v-col>
+
+    <v-col>
+      <v-card-text>
+        <h2 class="text-h6">
+          联盟
+        </h2>
+        <v-chip-group v-model="selectedAlliances" column multiple>
+          <v-chip v-for="alliance in alliances" filter outlined label>
+            {{ alliance }}
+          </v-chip>
+        </v-chip-group>
+      </v-card-text>
+    </v-col>
+  </v-row>
+  <!-- <div class="d-flex justify-center">
+    <v-btn>显示所有</v-btn>
+  </div> -->
+  <!-- <span>{{ selectedRegions }}</span> -->
+  <!-- <span>{{ filteredRegions }}</span> -->
+</template>
+
+<script>
+export default {
+  name: 'Filter',
+
+  components: {
+
+  },
+
+  props: {
+    regions: Array,
+    alliances: Array,
+  },
+
+  emits: ['updateFilters'],
+
+  data: () => ({
+    selectedRegions: [],
+    selectedAlliances: [],
+  }),
+
+  watch: {
+    selectedRegions() {
+      this.$emit('updateFilters', this.selectedRegions, this.selectedAlliances);
+    },
+
+    selectedAlliances() {
+      this.$emit('updateFilters', this.selectedRegions, this.selectedAlliances);
+    },
+  },
+}
+</script>
+
+<style>
+
+</style>

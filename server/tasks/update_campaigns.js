@@ -50,7 +50,7 @@ module.exports = async function (app) {
     record.event_type = event_type;
 
     // delete unused keys
-    delete record.campaign_id;
+    // delete record.campaign_id;
     delete record.constellation_id;
     delete record.defender_id;
     delete record.solar_system_id;
