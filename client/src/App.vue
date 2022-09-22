@@ -1,60 +1,24 @@
 <template>
   <v-app>
-    <v-app-bar
-      density="compact"
-    >
-      <v-app-bar-nav-icon class="d-flex d-sm-none" variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar density="compact">
       <v-app-bar-title>晨曦增强表</v-app-bar-title>
-      <!-- <v-list class="d-none d-sm-flex"
-        :items = "navItems"
-      ></v-list> -->
-      <a
-        class="d-none d-sm-flex"
-        v-for="item in navItems" 
-        :href=item.value
-      >{{item.title}}</a>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
-      <a icon href="https://github.com/mintnick/evehu_timer" target="_blank">
+
+      <v-btn icon href="https://www.evehu.cn/donate" target="_blank">
+        <v-icon>mdi-currency-usd</v-icon>
+      </v-btn>
+      <v-btn icon href="https://github.com/mintnick/evehu_timer" target="_blank">
         <v-icon>mdi-github</v-icon>
-      </a>
+      </v-btn>
       <v-btn icon @click="toggleTheme">
         <v-icon>mdi-brightness-6</v-icon>
       </v-btn>
-      <!-- <v-btn @click="toggleTheme">Theme</v-btn> -->
 
     </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      width="128"
-      bottom
-      temporary
-    >
-      <!-- <a
-        v-for="item in navItems" 
-        :href=item.value
-      >{{item.title}}</a> -->
-      <v-list-item
-        v-for="item in navItems"
-      >
-        <a :href="item.value">{{item.title}}</a>
-      </v-list-item>
-    </v-navigation-drawer>
-
     <v-main>
-      <Filter
-        :regions="getRegions"
-        :alliances="getAlliances"
-        @updateFilters="updateFilters"
-      ></Filter>
-
-      <CampaignBoard
-        :filteredCampaigns="getFilteredCampaigns"
-      >
-      </CampaignBoard>
-      <!-- <span>{{ selectedRegions }}</span>
-      <span>{{ selectedAlliances }}</span>
-      <span>{{ getFilteredCampaigns }}</span> -->
+      <Filter :regions="getRegions" :alliances="getAlliances" @updateFilters="updateFilters"></Filter>
+      <CampaignBoard :filteredCampaigns="getFilteredCampaigns"></CampaignBoard>
     </v-main>
   </v-app>
 </template>
@@ -68,34 +32,16 @@ export default {
   name: 'App',
 
   components: {
-    Filter, CampaignBoard,
+    Filter,
+    CampaignBoard,
   },
 
   data: () => ({
-    socket: {},
+    socket: {}, // WebSocket
     campaigns: [],
     selectedRegions: [],
     selectedAlliances: [],
-
-    drawer: false,
-    group: null,
-    navItems: [
-      {
-        title: '首页',
-        value: '/'
-      },
-      {
-        title: '捐赠',
-        value: 'donate'
-      },
-    ]
   }),
-
-  watch: {
-    group() {
-      this.drawer = false
-    },
-  },
 
   setup() {
     const theme = useTheme();
@@ -106,6 +52,7 @@ export default {
   },
 
   mounted() {
+    // initialize WebSocket connection
     const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
     const port = ':9090';
     const url = protocol + 'localhost' + port;
@@ -119,7 +66,6 @@ export default {
 
     this.socket.onmessage = (event) => {
       this.campaigns = JSON.parse(event.data);
-      // console.log(this.campaigns);
     }
 
     this.socket.onclose = () => {
@@ -132,7 +78,7 @@ export default {
   },
 
   computed: {
-    getRegions(){
+    getRegions() {
       if (!this.campaigns) return;
       let regions = new Set();
       this.campaigns.map(record => regions.add(record.region_name));
@@ -172,8 +118,5 @@ export default {
 </script>
 
 <style>
-  a {
-    text-decoration: none;
-    margin-right: 1vw;
-  }
+
 </style>

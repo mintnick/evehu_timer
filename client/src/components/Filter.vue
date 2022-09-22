@@ -1,13 +1,12 @@
 <template>
-  <!-- <span>{{ regions }}</span> -->
   <v-row>
     <v-col>
       <v-card-text>
-        <h2 class="text-h6">
+        <h2 class="text-h5">
           星域
         </h2>
         <v-chip-group v-model="selectedRegions" column multiple>
-          <v-chip v-for="region in regions" filter outlined label>
+          <v-chip v-for="region in regions" filter outlined label size="large">
             {{ region }}
           </v-chip>
         </v-chip-group>
@@ -16,31 +15,22 @@
 
     <v-col>
       <v-card-text>
-        <h2 class="text-h6">
+        <h2 class="text-h5">
           联盟
         </h2>
         <v-chip-group v-model="selectedAlliances" column multiple>
-          <v-chip v-for="alliance in alliances" filter outlined label>
+          <v-chip v-for="alliance in alliances" filter outlined label size="large">
             {{ alliance }}
           </v-chip>
         </v-chip-group>
       </v-card-text>
     </v-col>
   </v-row>
-  <!-- <div class="d-flex justify-center">
-    <v-btn>显示所有</v-btn>
-  </div> -->
-  <!-- <span>{{ selectedRegions }}</span> -->
-  <!-- <span>{{ filteredRegions }}</span> -->
 </template>
 
 <script>
 export default {
   name: 'Filter',
-
-  components: {
-
-  },
 
   props: {
     regions: Array,
@@ -50,9 +40,9 @@ export default {
   emits: ['updateFilters'],
 
   data: () => ({
-    selectedRegions: [],
+    selectedRegions: [],  // region filter indices
     selectedRegionNames: [],
-    selectedAlliances: [],
+    selectedAlliances: [],  // alliance filter indices
     selectedAllianceNames: [],
   }),
 

@@ -1,12 +1,6 @@
 <template>
-  <!-- <span>{{ filteredCampaigns }}</span> -->
-  <v-row
-    class="d-flex mb-6"
-  >
-    <CampaignCard
-      v-for="campaign in filteredCampaigns"
-      :campaignData=campaign
-    ></CampaignCard>
+  <v-row class="d-flex mb-5 px-5">
+    <CampaignCard v-for="campaign in filteredCampaigns" :campaignData=campaign></CampaignCard>
   </v-row>
 </template>
 
@@ -16,14 +10,11 @@ import CampaignCard from './CampaignCard.vue'
 export default {
   name: 'CampaignBoard',
 
-  components: {CampaignCard},
+  components: { CampaignCard },
 
   props: {
-    filteredCampaigns: [],
+    filteredCampaigns: Array,
   },
-  
-  data: () => ({
-  }),
 } 
 </script>
 
