@@ -51,16 +51,20 @@ export default {
 
   data: () => ({
     selectedRegions: [],
+    selectedRegionNames: [],
     selectedAlliances: [],
+    selectedAllianceNames: [],
   }),
 
   watch: {
     selectedRegions() {
-      this.$emit('updateFilters', this.selectedRegions, this.selectedAlliances);
+      this.selectedRegionNames = this.selectedRegions.map(i => this.regions[i]);
+      this.$emit('updateFilters', this.selectedRegionNames, this.selectedAllianceNames);
     },
 
     selectedAlliances() {
-      this.$emit('updateFilters', this.selectedRegions, this.selectedAlliances);
+      this.selectedAllianceNames = this.selectedAlliances.map(i => this.alliances[i]);
+      this.$emit('updateFilters', this.selectedRegionNames, this.selectedAllianceNames);
     },
   },
 }

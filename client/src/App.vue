@@ -42,14 +42,15 @@
     </v-navigation-drawer>
 
     <v-main>
-      <!-- <span>{{ campaigns[0] }}</span>
-      <span>{{ getRegions }}</span>
-      <span>{{ getAlliances }}</span> -->
       <Filter
         :regions="getRegions"
         :alliances="getAlliances"
         @updateFilters="updateFilters"
       ></Filter>
+
+      <!-- <span>{{ selectedRegions }}</span>
+      <span>{{ selectedAlliances }}</span>
+      <span>{{ getFilteredCampaigns }}</span> -->
     </v-main>
   </v-app>
 </template>
@@ -68,7 +69,6 @@ export default {
   data: () => ({
     socket: {},
     campaigns: [],
-    filteredCampaignIds: Set,
     selectedRegions: [],
     selectedAlliances: [],
 
@@ -142,11 +142,25 @@ export default {
       allis = Array.from(allis);
       return allis;
     },
+
+    getFilteredCampaigns() {
+      if (this.selectedRegions.length == 0 && this.selectedAlliances.length == 0) return this.campaigns;
+
+      let filteredCampaigns = [];
+      for (const campaign of this.campaigns) {
+        if (this.selectedRegions.includes(campaign.region_name) || this.selectedAlliances.includes(campaign.alli_name)) {
+          filteredCampaigns.push(campaign);
+        }
+      }
+      return filteredCampaigns;
+    },
   },
 
   methods: {
     updateFilters(selectedRegions, selectedAlliances) {
       // console.log(selectedRegions);
+      this.selectedRegions = selectedRegions;
+      this.selectedAlliances = selectedAlliances;
     },
   }
 }
