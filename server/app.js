@@ -33,7 +33,7 @@ isDowntime = () => {
   const hour = ('0' + date.getHours()).slice(-2);
   const minute = ('0' + date.getMinutes()).slice(-2);
   const time = hour + minute;
-  return (time >= '1055' && time <= '1130');
+  return (time >= '1055' && time <= '1115');
 }
 
 sleep = (sec) => { return new Promise(resolve => { setTimeout(resolve, sec*1000)})};
@@ -54,7 +54,7 @@ async function update(app) {
 }
 
 // websocket
-const wss = new ws.WebSocketServer({port: 9999});
+const wss = new ws.WebSocketServer({path: '/ws', port: 9999});
 wss.on('connection', function connection(ws) {
   ws.send(app.campaigns);
 
