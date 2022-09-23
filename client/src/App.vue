@@ -62,7 +62,7 @@ export default {
     this.socket.onopen = () => {
       setInterval(() => {
         this.socket.send('update')
-      }, 60000)
+      }, 30000)
     }
 
     this.socket.onmessage = (event) => {
@@ -72,6 +72,7 @@ export default {
     this.socket.onclose = (event) => {
       this.socket = new WebSocket(url);
     }
+
   },
 
   computed: {
