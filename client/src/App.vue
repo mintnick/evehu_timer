@@ -47,11 +47,18 @@ export default {
     const theme = useTheme();
     return {
       theme,
-      toggleTheme: () => theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+      toggleTheme: () => {
+        theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+        document.cookie = "theme="+theme.global.name.value+";path=/";
+      }
     }
   },
 
   mounted() {
+    const value = `;${document.cookie}`;
+    const parts = value.split(`;theme=`);
+    if (parts.length === 2) this.theme.global.name.value = parts.pop().split(';').shift();
+
     const dev = import.meta.env.DEV;
     let url;
     if (dev) url = 'ws://localhost:9999/ws' 
