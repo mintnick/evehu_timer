@@ -52,22 +52,27 @@ export default {
   },
 
   mounted() {
+    try {
+      const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
+      const host = location.hostname;
+      const port = ':9999';
+      const url = protocol + host + port;
+      this.socket = new WebSocket(url);
+
+      this.socket.onopen = () => {
+        setInterval(() => {
+          this.socket.send('update')
+        }, 60000)
+      }
+
+      this.socket.onmessage = (event) => {
+        this.campaigns = JSON.parse(event.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
     // initialize WebSocket connection
-    const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
-    const host = location.hostname;
-    const port = ':9999';
-    const url = protocol + host + port;
-    this.socket = new WebSocket(url);
-
-    this.socket.onopen = () => {
-      setInterval(() => {
-        this.socket.send('update')
-      }, 60000)
-    }
-
-    this.socket.onmessage = (event) => {
-      this.campaigns = JSON.parse(event.data);
-    }
+    
 
     // this.socket.onclose = () => {
     //   try {
