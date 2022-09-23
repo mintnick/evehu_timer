@@ -14,7 +14,7 @@
         </v-col>
       </v-row>
 
-      <v-progress-linear v-model="progress" color="amber" height="30">
+      <v-progress-linear v-if="isActive" v-model="progress" color="amber" height="30">
         <strong>进攻方进度 {{ progress }}%</strong>
       </v-progress-linear>
     </v-card-text>
