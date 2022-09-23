@@ -53,7 +53,8 @@ export default {
 
   mounted() {
     // initialize WebSocket connection
-    const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
+    // const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
+    const protocol = 'ws://';
     const host = location.hostname;
     const port = ':9999';
     const url = protocol + host + port;
@@ -69,13 +70,13 @@ export default {
       this.campaigns = JSON.parse(event.data);
     }
 
-    this.socket.onclose = () => {
-      try {
-        this.socket = new WebSocket(url);
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    // this.socket.onclose = () => {
+    //   try {
+    //     this.socket = new WebSocket(url);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
   },
 
   computed: {
