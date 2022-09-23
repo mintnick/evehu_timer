@@ -12,5 +12,10 @@ export default defineConfig({
 	],
   build: {
     outDir: "../server/public"
+  },
+  server: {
+    proxy: {
+      '/ws': 'ws://localhost:9999/ws',
+    }
   }
 })
