@@ -68,6 +68,10 @@ export default {
     this.socket.onmessage = (event) => {
       this.campaigns = JSON.parse(event.data);
     }
+
+    this.socket.onclose = (event) => {
+      this.socket = new WebSocket(url);
+    }
   },
 
   computed: {
