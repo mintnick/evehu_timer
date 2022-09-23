@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var phin = require('phin').defaults({'method': 'get', 'headers': {'User-Agent': 'evehu - timer'}});
 var mysql = require('./models/mysqldb.js');
 const ws = require('ws');
-const rateLimit = require('express-rate-limit');
 
 const router = require('./routes.js');
 const update_campaigns = require('./tasks/update_campaigns.js');
@@ -25,17 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// rate limit
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Too many requests',
-  standardHeaders: true,
-  legacyHeaders: false,
-})
-
-app.use(limiter);
 
 app.use('/', router);
 
