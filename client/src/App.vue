@@ -53,8 +53,7 @@ export default {
 
   mounted() {
     // initialize WebSocket connection
-    // const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
-    const protocol = 'ws://';
+    const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
     const host = location.hostname;
     const port = ':9999';
     const url = protocol + host + port;
