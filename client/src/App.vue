@@ -54,7 +54,7 @@ export default {
   mounted() {
     // initialize WebSocket connection
     const protocol = (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
-    const port = ':9090';
+    const port = ':9999';
     const url = protocol + 'localhost' + port;
     this.socket = new WebSocket(url);
 

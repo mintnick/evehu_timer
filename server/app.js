@@ -54,7 +54,7 @@ async function update(app) {
 }
 
 // websocket
-const wss = new ws.WebSocketServer({port: 9090});
+const wss = new ws.WebSocketServer({port: 9999});
 wss.on('connection', function connection(ws) {
   ws.send(app.campaigns);
 
