@@ -49,7 +49,9 @@ export default {
       theme,
       toggleTheme: () => {
         theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-        document.cookie = "theme="+theme.global.name.value+";path=/";
+        let now = new Date();
+        now.setUTCFullYear(now.getFullYear() + 10);
+        document.cookie = "theme="+theme.global.name.value+";expires="+now+";path=/";
       }
     }
   },
