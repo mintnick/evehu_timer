@@ -55,7 +55,7 @@ export default {
     const dev = import.meta.env.DEV;
     let url;
     if (dev) url = 'ws://localhost:9999/ws' 
-    else url = '/ws'
+    else url = 'wss://' + location.hostname + '/ws'
 
     this.socket = new WebSocket(url);
 
