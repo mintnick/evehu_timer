@@ -62,7 +62,7 @@ export default {
     if (parts.length === 2) this.theme.global.name.value = parts.pop().split(';').shift();
 
     if (import.meta.env.DEV) this.apiUrl = 'http://localhost:3001/api/campaigns'
-    else this.apiUrl = location.hostname + '/api/campaigns'
+    else this.apiUrl = '/api/campaigns'
 
     setInterval(this.updateCampaigns(), 60000);
   },
@@ -106,7 +106,7 @@ export default {
 
     updateCampaigns() {
       if (!this.apiUrl) return
-      
+
       fetch(this.apiUrl)
         .then((res) => res.json())
         .then((data) => this.campaigns = data);
