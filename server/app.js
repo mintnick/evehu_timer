@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var phin = require('phin').defaults({'method': 'get', 'headers': {'User-Agent': 'evehu - timer'}});
 var mysql = require('./models/mysqldb.js');
 var cors = require('cors');
-const ws = require('ws');
 
 const router = require('./routes.js');
 const update_campaigns = require('./tasks/update_campaigns.js');
@@ -53,17 +52,5 @@ async function update(app) {
   await sleep(60);
   update(app);
 }
-
-// websocket
-const wss = new ws.WebSocketServer({path: '/ws', port: 9999});
-wss.on('connection', function connection(ws) {
-  ws.send(app.campaigns);
-
-  ws.on('message', function message(data) {
-    if (data == "update") {
-      ws.send(app.campaigns)
-    }
-  })
-})
 
 module.exports = app;
