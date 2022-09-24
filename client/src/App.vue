@@ -37,10 +37,10 @@ export default {
   },
 
   data: () => ({
-    socket: {}, // WebSocket
     campaigns: [],
     selectedRegions: [],
     selectedAlliances: [],
+    apiUrl: "",
   }),
 
   setup() {
@@ -61,27 +61,10 @@ export default {
     const parts = value.split(`;theme=`);
     if (parts.length === 2) this.theme.global.name.value = parts.pop().split(';').shift();
 
-    const dev = import.meta.env.DEV;
-    let url;
-    if (dev) url = 'ws://localhost:9999/ws' 
-    else url = 'wss://' + location.hostname + '/ws'
+    if (import.meta.env.DEV) this.apiUrl = 'http://localhost:3001/api/campaigns'
+    else this.apiUrl = location.hostname + '/api/campaigns'
 
-    this.socket = new WebSocket(url);
-
-    this.socket.onopen = () => {
-      setInterval(() => {
-        this.socket.send('update')
-      }, 30000)
-    }
-
-    this.socket.onmessage = (event) => {
-      this.campaigns = JSON.parse(event.data);
-    }
-
-    this.socket.onclose = (event) => {
-      this.socket = new WebSocket(url);
-    }
-
+    setInterval(this.updateCampaigns(), 60000);
   },
 
   computed: {
@@ -119,6 +102,14 @@ export default {
     updateFilters(selectedRegions, selectedAlliances) {
       this.selectedRegions = selectedRegions;
       this.selectedAlliances = selectedAlliances;
+    },
+
+    updateCampaigns() {
+      if (!this.apiUrl) return
+      
+      fetch(this.apiUrl)
+        .then((res) => res.json())
+        .then((data) => this.campaigns = data);
     },
   }
 }

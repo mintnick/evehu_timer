@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => res.sendFile('index.html'));
+
 router.get('/api/campaigns', (req, res) => {
   const campaigns = req.app.campaigns;
   if (campaigns) {

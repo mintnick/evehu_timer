@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 // var logger = require('morgan');
 var phin = require('phin').defaults({'method': 'get', 'headers': {'User-Agent': 'evehu - timer'}});
 var mysql = require('./models/mysqldb.js');
+var cors = require('cors');
 const ws = require('ws');
 
 const router = require('./routes.js');
@@ -17,14 +18,14 @@ app.mysql = new mysql({
   password: 'password',
   database: 'evehu_timer'
 });
-app.campaigns = "";
+app.campaigns = [];
 
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 app.use('/', router);
 
 // util functions
@@ -46,7 +47,7 @@ async function update(app) {
     console.log('server down, wait 5 min');
     await sleep(600);
   } else {
-    app.campaigns = JSON.stringify(await update_campaigns(app));
+    app.campaigns = await update_campaigns(app);
   }
 
   await sleep(60);
