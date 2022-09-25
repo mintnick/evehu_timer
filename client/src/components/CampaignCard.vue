@@ -1,13 +1,14 @@
 <template>
-  <v-card class="mx-2 mb-2" width="300" height="150">
-    <v-card-text class="row">
+  <v-card class="mx-2 mb-2" width="300" height="170" elevation="5">
+    <v-card-text>
+      <p class="font-weight-black text-h6 text-center">{{ campaignData.region_name }}</p>
       <v-row>
         <v-col cols="8">
-          <div class="text-h5 card-title" :class="isActive">
+          <div class="text-h6 card-title" :class="isActive">
             {{ campaignData.system_name + ' ' + campaignData.event_type}}
           </div>
-          <div class="text-h6">{{ campaignData.local_date + ' ' + campaignData.local_time }}</div>
-          <div class="alli-name">{{ campaignData.alli_name }}</div>
+          <div class="text-subtitle-1 font-weight-medium">{{ campaignData.local_date + ' ' + campaignData.local_time }}</div>
+          <div class="alli-name font-weight-black">{{ campaignData.alli_name }}</div>
         </v-col>
         <v-col cols="4">
           <v-img :src="alliIcon"></v-img>
