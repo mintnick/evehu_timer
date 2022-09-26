@@ -11,11 +11,11 @@
           <div class="alli-name font-weight-black">{{ campaignData.alli_name }}</div>
         </v-col>
         <v-col cols="4">
-          <v-img :src="alliIcon"></v-img>
+          <v-img :src="alliIcon" :alt="campaignData.alli_name" lazy-src style="background-color: black"></v-img>
         </v-col>
       </v-row>
 
-      <v-progress-linear v-if="isActive" v-model="progress" color="amber" height="30">
+      <v-progress-linear v-if="isActive" v-model="progress" color="amber-darken-3" height="30">
         <strong>进攻 {{ progress }}%</strong>
         <v-spacer></v-spacer>
         <strong>防守 {{ 100 - progress }}%</strong>
@@ -67,7 +67,7 @@ export default {
   /* IE 10+, Fx 29+ */
 }
 
-@-webkit-keyframes BLINK_ANIMATION {
+@keyframes BLINK_ANIMATION {
   0% {
     background-color: rgba(22, 160, 133, 0.1);
   }
