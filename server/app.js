@@ -46,7 +46,8 @@ async function update(app) {
     console.log('server down, wait 5 min');
     await sleep(600);
   } else {
-    app.campaigns = await update_campaigns(app);
+    const data = await update_campaigns(app);
+    if (data) app.campaigns = data;
   }
 
   await sleep(60);
