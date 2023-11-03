@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var phin = require('phin').defaults({'method': 'get', 'headers': {'User-Agent': 'evehu - timer'}});
 var mysql = require('./models/mysqldb.js');
 var cors = require('cors');
+require('dotenv').config({path: __dirname + '.env'})
 
 const router = require('./routes.js');
 const update_campaigns = require('./tasks/update_campaigns.js');
