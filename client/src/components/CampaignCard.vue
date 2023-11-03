@@ -56,13 +56,10 @@ const countdown = computed(() => {
   let 
       seconds = Math.floor((duration.value / 1000) % 60),
       minutes = Math.floor((duration.value / (1000 * 60)) % 60),
-      hours = Math.floor((duration.value / (1000 * 60 * 60)) % 24);
+      hours = Math.floor((duration.value / (1000 * 60 * 60)));
 
-  hours = (hours < 10) ? hours : hours;
-  minutes = (minutes < 10) ? minutes : minutes;
-  seconds = (seconds < 10) ? seconds : seconds;
-
-  return hours + "小时" + minutes + "分钟" + seconds + "秒";
+  // return hours + "小时" + minutes + "分钟" + seconds + "秒";
+  return (hours > 0 ? hours + '小时' : '') + (minutes > 0 ? minutes + '分钟' : '') + ( seconds > 0 ? seconds + '秒' : '');
 })
 
 </script>
