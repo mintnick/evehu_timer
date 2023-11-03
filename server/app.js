@@ -12,10 +12,10 @@ const update_campaigns = require('./tasks/update_campaigns.js');
 var app = express();
 app.phin = phin;
 app.mysql = new mysql({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'evehu_timer'
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 });
 app.campaigns = [];
 
@@ -43,7 +43,7 @@ setTimeout(() => {update(app)}, 1);
 
 async function update(app) {
   if (isDowntime()) {
-    console.log('server down, wait 5 min');
+    console.log('server down, wait 10 min');
     await sleep(600);
   } else {
     const data = await update_campaigns(app);

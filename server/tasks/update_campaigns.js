@@ -1,8 +1,6 @@
 const esi = require('../models/esi')
 const alliances = require('../models/alliances');
 
-const camp_key = "campaigns";
-
 module.exports = async function (app) {
   const data = await esi.getCampaigns(app);
   if (!data) return;

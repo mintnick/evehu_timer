@@ -1,4 +1,4 @@
-const prefix = 'https://esi.evepc.163.com/latest/';
+const prefix = 'https://ali-esi.evepc.163.com/latest/';
 const surfix = '/?datasource=serenity&language=zh';
 
 async function sendGet(app, params) {
