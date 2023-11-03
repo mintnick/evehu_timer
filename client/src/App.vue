@@ -19,102 +19,108 @@
     </v-app-bar>
 
     <v-main>
-      <Filter :regions="getRegions" :alliances="getAlliances" @updateFilters="updateFilters"></Filter>
+      <v-row>
+        <v-col>
+          <v-card-text>
+            <h2 class="text-h5">
+              星域
+            </h2>
+            <v-chip-group v-model="selectedRegions" column multiple>
+              <v-chip v-for="region in getRegions" filter outlined label size="large">
+                {{ region }}
+              </v-chip>
+            </v-chip-group>
+          </v-card-text>
+        </v-col>
+
+        <v-col>
+          <v-card-text>
+            <h2 class="text-h5">
+              联盟
+            </h2>
+            <v-chip-group v-model="selectedAlliances" column multiple>
+              <v-chip v-for="alliance in getAlliances" filter outlined label size="large">
+                {{ alliance }}
+              </v-chip>
+            </v-chip-group>
+          </v-card-text>
+        </v-col>
+      </v-row>
       <CampaignBoard :filteredCampaigns="getFilteredCampaigns"></CampaignBoard>
     </v-main>
   </v-app>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
+import Filter from './components/Filter.vue';
+import CampaignBoard from './components/CampaignBoard.vue';
 import { useTheme } from 'vuetify/lib/framework.mjs';
-import Filter from './components/Filter.vue'
-import CampaignBoard from './components/CampaignBoard.vue'
 
-export default {
-  name: 'App',
+const campaigns = ref([]), selectedAlliances = ref([]), selectedRegions = ref([]);
 
-  components: {
-    Filter,
-    CampaignBoard,
-  },
+// Theme
+const theme = useTheme();
+const toggleTheme = () => {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+  document.cookie = "theme=" + theme.global.name.value;
+};
+let themeString = document.cookie
+  .split("; ")
+  .find((row) => row.startsWith("theme="))
+  ?.split("=")[1];
+if (themeString) theme.global.name.value = themeString;
 
-  data: () => ({
-    campaigns: [],
-    selectedRegions: [],
-    selectedAlliances: [],
-    apiUrl: "",
-  }),
+// API URL
+let apiUrl = ''; 
+if (import.meta.env.DEV) apiUrl = 'http://localhost:3001/api/campaigns'
+else apiUrl = '/api/campaigns'
 
-  setup() {
-    const theme = useTheme();
-    return {
-      theme,
-      toggleTheme: () => {
-        theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-        let now = new Date();
-        now.setUTCFullYear(now.getFullYear() + 10);
-        document.cookie = "theme="+theme.global.name.value+";expires="+now+";path=/";
-      }
+// computed vars
+const getRegions = computed(() => {
+  if (!campaigns) return;
+  let regions = new Set();
+  campaigns.value.map(record => regions.add(record.region_name));
+  regions = Array.from(regions);
+  return regions;
+});
+
+const getAlliances = computed(() => {
+  if (!campaigns.value) return;
+  let allis = new Set();
+  campaigns.value.map(record => allis.add(record.alli_name));
+  allis = Array.from(allis);
+  return allis;
+});
+
+const getFilteredCampaigns = computed(() => {
+  if (selectedRegions.value.length == 0 && selectedAlliances.value.length == 0) return campaigns.value;
+
+  let filteredCampaigns = [];
+  console.log(selectedAlliances.value);
+  for (const campaign of campaigns.value) {
+    for (const a of selectedAlliances.value) {
+      if (campaign.alli_name == getAlliances.value.at(a)) filteredCampaigns.push(campaign);
     }
-  },
-
-  mounted() {
-    const value = `;${document.cookie}`;
-    const parts = value.split(`;theme=`);
-    if (parts.length === 2) this.theme.global.name.value = parts.pop().split(';').shift();
-
-    if (import.meta.env.DEV) this.apiUrl = 'http://localhost:3001/api/campaigns'
-    else this.apiUrl = '/api/campaigns'
-
-    setInterval(this.updateCampaigns(), 60000);
-  },
-
-  computed: {
-    getRegions() {
-      if (!this.campaigns) return;
-      let regions = new Set();
-      this.campaigns.map(record => regions.add(record.region_name));
-      regions = Array.from(regions);
-      return regions;
-    },
-
-    getAlliances() {
-      if (!this.campaigns) return;
-      let allis = new Set();
-      this.campaigns.map(record => allis.add(record.alli_name));
-      allis = Array.from(allis);
-      return allis;
-    },
-
-    getFilteredCampaigns() {
-      if (this.selectedRegions.length == 0 && this.selectedAlliances.length == 0) return this.campaigns;
-
-      let filteredCampaigns = [];
-      for (const campaign of this.campaigns) {
-        if (this.selectedRegions.includes(campaign.region_name) || this.selectedAlliances.includes(campaign.alli_name)) {
-          filteredCampaigns.push(campaign);
-        }
-      }
-
-      return filteredCampaigns;
-    },
-  },
-
-  methods: {
-    updateFilters(selectedRegions, selectedAlliances) {
-      this.selectedRegions = selectedRegions;
-      this.selectedAlliances = selectedAlliances;
-    },
-
-    updateCampaigns() {
-      if (!this.apiUrl) return
-
-      fetch(this.apiUrl)
-        .then((res) => res.json())
-        .then((data) => this.campaigns = data);
-    },
+    for (const r of selectedRegions.value) {
+      if (campaign.region_name == getRegions.value.at(r)) filteredCampaigns.push(campaign);
+    }
   }
+
+  return filteredCampaigns;
+});
+
+// methods
+function updateCampaigns() {
+  if (!apiUrl) return
+
+  fetch(apiUrl)
+    .then((res) => res.json())
+    .then((data) => campaigns.value = data);
 }
+
+// start update
+setInterval(updateCampaigns(), 60000);
 </script>
 
 <style>

@@ -60,8 +60,7 @@ const countdown = computed(() => {
 
   // return hours + "小时" + minutes + "分钟" + seconds + "秒";
   return (hours > 0 ? hours + '小时' : '') + (minutes > 0 ? minutes + '分钟' : '') + ( seconds > 0 ? seconds + '秒' : '');
-})
-
+});
 </script>
 
 <style>
