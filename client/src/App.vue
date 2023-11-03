@@ -15,7 +15,6 @@
       <v-btn icon @click="toggleTheme">
         <v-icon>mdi-brightness-6</v-icon>
       </v-btn>
-
     </v-app-bar>
 
     <v-main>
@@ -45,14 +44,17 @@
           </v-card-text>
         </v-col>
       </v-row>
-      <CampaignBoard :filteredCampaigns="getFilteredCampaigns"></CampaignBoard>
+
+      <v-row class="d-flex justify-center mb-5 px-5">
+        <CampaignCard v-for="campaign in getFilteredCampaigns" :campaignData=campaign></CampaignCard>
+      </v-row>
     </v-main>
   </v-app>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import CampaignBoard from './components/CampaignBoard.vue';
+import CampaignCard from './components/CampaignCard.vue';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 
 const campaigns = ref([]), selectedAlliances = ref([]), selectedRegions = ref([]);
