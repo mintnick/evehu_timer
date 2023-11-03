@@ -32,7 +32,6 @@
             </v-chip-group>
           </v-card-text>
         </v-col>
-
         <v-col>
           <v-card-text>
             <h2 class="text-h5">
@@ -53,7 +52,6 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import Filter from './components/Filter.vue';
 import CampaignBoard from './components/CampaignBoard.vue';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 
@@ -97,7 +95,6 @@ const getFilteredCampaigns = computed(() => {
   if (selectedRegions.value.length == 0 && selectedAlliances.value.length == 0) return campaigns.value;
 
   let filteredCampaigns = [];
-  console.log(selectedAlliances.value);
   for (const campaign of campaigns.value) {
     for (const a of selectedAlliances.value) {
       if (campaign.alli_name == getAlliances.value.at(a)) filteredCampaigns.push(campaign);

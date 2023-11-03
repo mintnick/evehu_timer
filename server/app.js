@@ -12,10 +12,10 @@ const update_campaigns = require('./tasks/update_campaigns.js');
 var app = express();
 app.phin = phin;
 app.mysql = new mysql({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  host: process.env.AWS_RDS_HOST,
+  user: process.env.AWS_RDS_USER,
+  password: process.env.AWS_RDS_PASSWORD,
+  database: process.env.AWS_RDS_EVEHU_TIMER_DB
 });
 app.campaigns = [];
 
