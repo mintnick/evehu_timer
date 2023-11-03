@@ -2,11 +2,11 @@
   <v-app>
     <v-app-bar density="compact">
       <v-app-bar-title>晨曦增强表</v-app-bar-title>
+      <span class="font-weight-bold mr-4">{{ campaigns.length }}个领地争夺中</span>
+      <span class="mr-4 text-red-lighten-2">晨曦时间 {{ new Date().toLocaleString("zh-CN", {dateStyle: "long", timeStyle: "medium"}) }}</span>
+      <span class="text-blue-lighten-2">宁静时间 {{ new Date().toLocaleString("zh-CN", {timeZone: "UTC", dateStyle: "long", timeStyle: "medium"}) }}</span>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
 
-      <v-btn icon href="https://www.evehu.cn/donate" target="_blank">
-        <v-icon>mdi-currency-usd</v-icon>
-      </v-btn>
       <v-btn icon href="https://github.com/mintnick/evehu_timer" target="_blank">
         <v-icon>mdi-github</v-icon>
       </v-btn>

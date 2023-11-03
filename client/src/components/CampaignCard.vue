@@ -14,6 +14,7 @@
           <v-img :src="alliIcon" :alt="campaignData.alli_name" lazy-src style="background-color: black"></v-img>
         </v-col>
       </v-row>
+      <v-row align-self="center" justify="center" class="text-h6 font-weight-bold text-red-lighten-2">{{ countdown }}</v-row>
 
       <v-progress-linear v-if="isActive" v-model="progress" color="amber-darken-3" height="30">
         <strong>进攻 {{ progress }}%</strong>
@@ -24,30 +25,46 @@
   </v-card>
 </template>
 
-<script>
-export default {
-  name: 'CampaignCard',
+<script setup>
+import { ref, computed } from 'vue'
 
-  props: {
-    campaignData: {},
-  },
+const props = defineProps(["campaignData"]);
 
-  computed: {
-    isActive() {
-      const campTime = Date.parse(this.campaignData.start_time);
-      const current = new Date().getTime();
-      if (campTime < current) return 'blink';
-    },
+const isActive = computed(() => {
+  const campTime = Date.parse(props['campaignData'].start_time);
+  const current = new Date().getTime();
+  if (campTime < current) return 'blink';
+})
 
-    alliIcon() {
-      return 'https://image.evepc.163.com/Alliance/' + this.campaignData.defender_id + '_128.png'
-    },
+const progress = computed(() => {
+  return props['campaignData'].attackers_score * 100;
+})
 
-    progress() {
-      return this.campaignData.attackers_score * 100;
-    }
+const alliIcon = `https://image.evepc.163.com/Alliance/${props['campaignData'].defender_id}_128.png`;
+
+const duration = ref(new Date(props['campaignData'].start_time).getTime() - new Date().getTime());
+const startTimer = () => {
+  if (duration.value > 0) {
+    setTimeout(() => {
+      duration.value -= 1000;
+      startTimer();
+    }, 1000)
   }
-}
+};
+startTimer();
+const countdown = computed(() => {
+  let 
+      seconds = Math.floor((duration.value / 1000) % 60),
+      minutes = Math.floor((duration.value / (1000 * 60)) % 60),
+      hours = Math.floor((duration.value / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? hours : hours;
+  minutes = (minutes < 10) ? minutes : minutes;
+  seconds = (seconds < 10) ? seconds : seconds;
+
+  return hours + "小时" + minutes + "分钟" + seconds + "秒";
+})
+
 </script>
 
 <style>

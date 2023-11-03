@@ -14,7 +14,7 @@ export default {
 
   props: {
     filteredCampaigns: Array,
-  },
+  }
 } 
 </script>
 
