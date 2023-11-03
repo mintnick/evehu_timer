@@ -4,8 +4,8 @@
       <v-app-bar-title>晨曦增强表</v-app-bar-title>
       <div class="d-none d-md-flex">
         <span class="font-weight-bold mr-4">{{ campaigns.length }}个领地争夺中</span>
-        <span class="mr-4 text-purple-lighten-2">晨曦时间 {{ new Date().toLocaleString("zh-CN", {dateStyle: "long", timeStyle: "medium"}) }}</span>
-        <span class="text-green-lighten-2">宁静时间 {{ new Date().toLocaleString("zh-CN", {timeZone: "UTC", dateStyle: "long", timeStyle: "medium"}) }}</span>
+        <span class="mr-4 text-purple-lighten-2">晨曦时间 {{ new Date(current_time).toLocaleString("zh-CN", {dateStyle: "long", timeStyle: "medium"}) }}</span>
+        <span class="text-green-lighten-2">宁静时间 {{ new Date(current_time).toLocaleString("zh-CN", {timeZone: "UTC", dateStyle: "long", timeStyle: "medium"}) }}</span>
       </div>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
 
@@ -58,6 +58,14 @@ import CampaignCard from './components/CampaignCard.vue';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 
 const campaigns = ref([]), selectedAlliances = ref([]), selectedRegions = ref([]);
+const current_time = ref(new Date().getTime());
+const tick = () => {
+  setTimeout(() => {
+    current_time.value += 1000;
+    tick();
+  }, 1000)
+};
+tick();
 
 // Theme
 const theme = useTheme();
@@ -76,7 +84,7 @@ let apiUrl = '';
 if (import.meta.env.DEV) apiUrl = 'http://localhost:3001/api/campaigns'
 else apiUrl = '/api/campaigns'
 
-// computed vars
+// computed
 const getRegions = computed(() => {
   if (!campaigns) return;
   let regions = new Set();
