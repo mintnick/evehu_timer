@@ -11,7 +11,8 @@ export default defineConfig({
 		vuetify({ autoImport: true }),
 	],
   build: {
-    outDir: "../server/public"
+    outDir: "../server/public",
+    emptyOutDir: true,
   },
   base: '',
 })
