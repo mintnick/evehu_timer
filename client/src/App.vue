@@ -4,8 +4,8 @@
       <v-app-bar-title>晨曦增强表</v-app-bar-title>
       <div class="d-none d-md-flex">
         <span class="font-weight-bold mr-4">{{ campaigns.length }}个领地争夺中</span>
-        <span class="mr-4 text-purple-lighten-2">晨曦时间 {{ new Date(current_time).toLocaleString("zh-CN", {dateStyle: "long", timeStyle: "medium"}) }}</span>
-        <span class="text-green-lighten-2">宁静时间 {{ new Date(current_time).toLocaleString("zh-CN", {timeZone: "UTC", dateStyle: "long", timeStyle: "medium"}) }}</span>
+        <span class="mr-4 text-purple-lighten-2">晨曦时间 {{ new Date(current_time).toLocaleString("zh-CN", {dateStyle: "short", timeStyle: "short"}) }}</span>
+        <span class="text-green-lighten-2">宁静时间 {{ new Date(current_time).toLocaleString("zh-CN", {timeZone: "UTC", dateStyle: "short", timeStyle: "short"}) }}</span>
       </div>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
 
@@ -115,6 +115,10 @@ const getFilteredCampaigns = computed(() => {
   }
 
   return filteredCampaigns;
+});
+
+const serenity_time = computed(() => {
+
 });
 
 // methods
