@@ -31,8 +31,12 @@ import { ref, computed } from 'vue'
 const props = defineProps(["campaignData"]);
 
 const isActive = computed(() => {
-  const campTime = Date.parse(props['campaignData'].start_time);
+  const utc_time = props['campaignData'].start_time.slice(0, -1) + '+08:00'
+  const campTime = new Date(utc_time);
+  // console.log(Date.parse(props['campaignData'].start_time));
+  // console.log(campTime.toString());
   const current = new Date().getTime();
+  // console.log(current);
   if (campTime < current) return 'blink';
 })
 
