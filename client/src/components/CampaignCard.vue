@@ -14,13 +14,14 @@
           <v-img :src="alliIcon" :alt="campaignData.alli_name" lazy-src style="background-color: black"></v-img>
         </v-col>
       </v-row>
-      <v-row align-self="center" justify="center" class="text-h6 font-weight-bold text-red-lighten-2">{{ countdown }}</v-row>
-
+      
       <v-progress-linear v-if="isActive" v-model="progress" color="amber-darken-3" height="30">
         <strong>进攻 {{ progress }}%</strong>
         <v-spacer></v-spacer>
         <strong>防守 {{ 100 - progress }}%</strong>
       </v-progress-linear>
+
+      <v-row v-else align-self="center" justify="center" class="text-h6 font-weight-bold text-red-lighten-2">{{ countdown }}</v-row>
     </v-card-text>
   </v-card>
 </template>
